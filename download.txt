@@ -1,0 +1,27 @@
+platform_build_config = {
+    'windows': {
+        'lang': 'C++ / MSVC',
+        'install_cmd': 'cmake -G "Visual Studio 17 2022" .. && cmake --build . --config Release',
+        'native_code': '#include <windows.h>\\n#include <mfapi.h> // Media Foundation for Windows'
+    },
+    'linux': {
+        'lang': 'C / GCC',
+        'install_cmd': 'sudo apt-get install libsdl2-dev libavcodec-dev && make',
+        'native_code': '#include <unistd.h>\\n#include <alsa/asoundlib.h> // Native Linux Sound'
+    },
+    'macos': {
+        'lang': 'Objective-C / Clang',
+        'install_cmd': 'brew install ffmpeg sdl2 && clang -framework Foundation -framework AVFoundation main.m -o player',
+        'native_code': '#import <Foundation/Foundation.h>\\n#import <AVFoundation/AVFoundation.h> // Native macOS Media'
+    }
+}
+
+# Writing the Master Platform Manifest
+with open('universal_install.txt', 'w') as f:
+    for os_name, details in platform_build_config.items():
+        f.write(f"--- {os_name.upper()} CONFIGURATION ---\\n")
+        f.write(f"Language: {details['lang']}\\n")
+        f.write(f"Install Command: {details['install_cmd']}\\n")
+        f.write(f"Native Header Example: {details['native_code']}\\n\\n")
+
+print("Universal OS Manifest generated. Check universal_install.txt for specific platform commands.")
