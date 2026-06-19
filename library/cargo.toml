@@ -1,0 +1,24 @@
+use std::fs::File;
+use std::io::{self, Write};
+
+fn main() -> io::Result<()> {
+    let cargo_toml = r#"
+[package]
+name = "rust_video_core"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ffmpeg-next = "6.0" # High-level Rust bindings for FFmpeg
+libc = "0.2"
+"#;
+
+    let mut file = File::create("Cargo.toml")?;
+    file.write_all(cargo_toml.as_bytes())?;
+    println!("Cargo.toml created for the Rust core.");
+    
+    Ok(())
+}
